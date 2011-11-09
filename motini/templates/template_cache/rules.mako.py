@@ -4,8 +4,8 @@ UNDEFINED = runtime.UNDEFINED
 __M_dict_builtin = dict
 __M_locals_builtin = locals
 _magic_number = 5
-_modified_time = 1273537674.435544
-_template_filename='/Users/nateaune/code/motini-github/motini/templates/rules.mako'
+_modified_time = 1320787031.498646
+_template_filename='/home/egj/Code/deliverance/Motini/motini/templates/rules.mako'
 _template_uri='/rules.mako'
 _template_cache=cache.Cache(__name__, _modified_time)
 _source_encoding='utf-8'
@@ -35,7 +35,7 @@ def render_body(context,**pageargs):
                 pass
             pass
         # SOURCE LINE 11
-        __M_writer(u'</rule>\n</ruleset>')
+        __M_writer(u'</rule>\n</ruleset>\n')
         return ''
     finally:
         context.caller_stack._pop_frame()

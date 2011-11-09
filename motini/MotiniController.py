@@ -38,6 +38,7 @@ class MotiniController():
         self.my_path_info = ""
         
     def _proxy_middleware(self, req, caching=True):
+
         if not req.path_info:
             req.path_info = '/'
 
@@ -53,6 +54,7 @@ class MotiniController():
         stop_headers = ['if-none-match','if-modified-since']
         px = Proxy(proxy_url,suppress_http_headers=stop_headers)
         lw = LinkRewriterMiddleware(px,dest_href,self.base_script)
+
         return lw
 
 
@@ -79,8 +81,8 @@ class MotiniController():
 
         req.path_info_pop()
         req.path_info_pop()
-        self.host = req.path_info_pop()
-        self.my_path_info = req.path_info
+        self.host = "twitter.github.com"
+        req.path_info = self.my_path_info = "/bootstrap/examples/fluid.html"
 
         try:
             rule_file = open('/var/tmp/rules_list.dat','r')
@@ -94,6 +96,7 @@ class MotiniController():
 
         proxy = self._proxy_middleware(req)
         deliv_mw = DeliveranceMiddleware(proxy, motini_rules)
+
         resp = req.get_response(deliv_mw)
         
         return resp
@@ -162,7 +165,7 @@ class MotiniRules(object):
         <ruleset>
         <match path="/motini/theme" class="swap"/>
         <rule class="swap" suppress-standard="1">
-        	<theme href="/theme/index.html"/>
+        	<theme href="http://twitter.github.com/bootstrap/examples/fluid.html"/>
             '''
         if rules:
             for rule in rules:
@@ -179,6 +182,7 @@ class MotiniRules(object):
         assert doc.tag == 'ruleset', (
             'Bad rule tag <%s> in document %s' % (doc.tag, url))
 
+        print rules_xml
         self.rules_set = RuleSet.parse_xml(doc, url)
 
     def __call__(self, get_resource, app, orig_req):

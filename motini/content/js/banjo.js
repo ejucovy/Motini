@@ -310,15 +310,21 @@ function AddRule() {
     });
 
     $('#delivtarget').load(function() {
-        $(this).contents().find(".clickable").click(function(e) {
+        var theme_body = $(this).contents().find("body");
+
+	window.theme_body = theme_body;
+
+        $(theme_body).click(function(e) {
             e.stopPropagation();
             // get some sort of css selector based around the html id.
-            var obj = this;
+            var obj = e.target;
+
             // for selecting uls via li? need to use "ancestors"
             // if ($(this)[0].tagName.toLowerCase() === 'li') {
             //    obj = obj.parent();
             // }
             var selector = getCSSSelector($(obj));
+	    console.log(selector);
             $('#status').html($('#status').html() + "Target: " + selector + "<br/>");
             // parent = getCSSSelector($(this).parent());
             // highlight the element in red
@@ -329,7 +335,7 @@ function AddRule() {
             if (ts) {
                 ts.clear();
             }
-            ts = new selectorHL(obj,pos.top,pos.left,ht,wd,4,'red', "TARGET_");
+            ts = new selectorHL(theme_body,pos.top,pos.left,ht,wd,4,'red', "target");
 
             if (currentDeliveranceRule && currentDeliveranceRule.contentRule != "") {
                 currentDeliveranceRule.themeRule = selector;
@@ -346,7 +352,6 @@ function AddRule() {
             }
             return false;
 	    });
-        var theme_body = $(this).contents().find("body");
 	$(theme_body).mouseover(
             function(e) {
                 e.stopImmediatePropagation();
