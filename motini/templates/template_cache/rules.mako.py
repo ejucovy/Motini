@@ -4,7 +4,7 @@ UNDEFINED = runtime.UNDEFINED
 __M_dict_builtin = dict
 __M_locals_builtin = locals
 _magic_number = 5
-_modified_time = 1320787031.498646
+_modified_time = 1321150952.451756
 _template_filename='/home/egj/Code/deliverance/Motini/motini/templates/rules.mako'
 _template_uri='/rules.mako'
 _template_cache=cache.Cache(__name__, _modified_time)
@@ -19,7 +19,7 @@ def render_body(context,**pageargs):
         rules = context.get('rules', UNDEFINED)
         __M_writer = context.writer()
         # SOURCE LINE 1
-        __M_writer(u'<?xml version="1.0"?>\n    <ruleset>\n    <match path="/motini/theme" class="swap"/>\n    <rule class="swap" suppress-standard="1">\n    \t<theme href="/theme/index.html"/>\n')
+        __M_writer(u'<?xml version="1.0"?>\n    <ruleset>\n    <match path="/motini/theme" class="swap"/>\n    <rule class="swap">\n    \t<theme href="/theme/index.html"/>\n')
         # SOURCE LINE 6
         if rules:
             # SOURCE LINE 7

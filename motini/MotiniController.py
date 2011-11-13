@@ -42,10 +42,10 @@ class MotiniController():
         if not req.path_info:
             req.path_info = '/'
 
-        proxy_url = '''http://%s/''' % (str(self.host))
+        proxy_url = '''http://%s''' % (str(self.host))
 
         # the proxied host, used for link re-writing
-        dest_href = '''http://%s/''' % (str(self.host))    
+        dest_href = '''http://%s''' % (str(self.host))    
 
         # stop caching and gzip encoding
         # req.remove_conditional_headers(remove_encoding=True)
@@ -65,12 +65,15 @@ class MotiniController():
 
         req.path_info_pop()
         req.path_info_pop()
-        self.host = req.path_info_pop()
-        self.my_path_info = req.path_info
+        req.path_info_pop()
 
         # add the proxy and link-rewriter WSGI middleware to these request on
         # the fly
-        proxy = self._proxy_middleware(req)
+        from deliverance.http_proxy import Proxy
+
+        proxy = Proxy("http://localhost:5000")
+        proxy.rewrite_links = True
+
         return req.get_response(proxy)
 
 
@@ -81,8 +84,7 @@ class MotiniController():
 
         req.path_info_pop()
         req.path_info_pop()
-        self.host = "twitter.github.com"
-        req.path_info = self.my_path_info = "/bootstrap/examples/fluid.html"
+        req.path_info_pop()
 
         try:
             rule_file = open('/var/tmp/rules_list.dat','r')
@@ -94,9 +96,20 @@ class MotiniController():
         # on this request
         motini_rules = MotiniRules(temporary_rules)
 
-        proxy = self._proxy_middleware(req)
-        deliv_mw = DeliveranceMiddleware(proxy, motini_rules)
+        #proxy = self._proxy_middleware(req)
 
+        from deliverance.http_proxy import Proxy
+        proxy = Proxy("http://localhost:5000")
+
+        deliv_mw = DeliveranceMiddleware(proxy, motini_rules)
+        
+        from deliverance import security
+        deliv_mw = security.SecurityContext.middleware(
+            deliv_mw,
+            display_local_files=True, display_logging=True,
+            execute_pyref=True)
+
+        print req.path_info
         resp = req.get_response(deliv_mw)
         
         return resp
@@ -164,8 +177,8 @@ class MotiniRules(object):
         rules_xml = '''<?xml version="1.0"?>
         <ruleset>
         <match path="/motini/theme" class="swap"/>
-        <rule class="swap" suppress-standard="1">
-        	<theme href="http://twitter.github.com/bootstrap/examples/fluid.html"/>
+        <rule class="swap">
+        	<theme href="http://localhost:9000/banks/detail/16094/"/>
             '''
         if rules:
             for rule in rules:
