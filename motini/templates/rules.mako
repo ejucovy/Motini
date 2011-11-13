@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
     <ruleset>
     <match path="/motini/theme" class="swap"/>
-    <rule class="swap" suppress-standard="1">
+    <rule class="swap">
     	<theme href="/theme/index.html"/>
 % if rules:
 % for rule in rules:
