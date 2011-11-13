@@ -31,8 +31,13 @@
               </form>
         </div>
 
+	<div id="status">
+	  Status:
+	</div>
+
         <div id="actions_box">
               <a href="/rules.xml">Show current rules</a><br/>
+              <a href="/motini/theme/${url}/?deliv_log=1">Debug result</a><br/>
               <a id="clear_rules" href="#">Clear rules</a><br/>
               <img id="loading" src="/images/ajax-loader.gif"/>
 
